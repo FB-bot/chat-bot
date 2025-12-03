@@ -1,0 +1,25 @@
+# Core
+Flask==2.3.3
+gunicorn==20.1.0
+python-dotenv==1.0.0
+
+# Web & Search
+requests==2.31.0
+beautifulsoup4==4.12.2
+googlesearch-python==1.2.3
+duckduckgo-search==3.9.2
+wikipedia-api==0.5.8
+
+# AI & ML
+sentence-transformers==2.2.2
+torch==2.1.0
+numpy==1.24.3
+transformers==4.36.0
+
+# Database
+sqlalchemy==2.0.23
+sqlite3
+
+# Utilities
+json5==0.9.14
+python-dateutil==2.8.2
