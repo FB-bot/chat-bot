@@ -3,7 +3,9 @@ services:
     name: bangla-ai-chatbot
     env: python
     region: singapore
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
     startCommand: gunicorn app:app
     envVars:
       - key: PYTHON_VERSION
@@ -14,5 +16,4 @@ services:
         value: "true"
       - key: MAX_SEARCH_PER_DAY
         value: "50"
-    healthCheckPath: /
     autoDeploy: true
