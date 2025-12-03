@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলা AI চ্যাটবট - গুগল সার্চ + সেল্ফ-লার্নিং</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- হেডার -->
+        <div class="header">
+            <h1><i class="fas fa-robot"></i> বাংলা AI চ্যাটবট</h1>
+            <p>গুগল থেকে তথ্য নিয়ে স্বয়ংক্রিয়ভাবে শেখে! 🤖🔍</p>
+            <div class="badge">
+                <i class="fas fa-bolt"></i> AI + গুগল
+            </div>
+        </div>
+        
+        <!-- স্ট্যাটাস বার -->
+        <div class="status-bar">
+            <div class="status-item">
+                <i class="fas fa-user"></i>
+                <span>ইউজার:</span>
+                <strong>{{ user_id[:10] }}...</strong>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>ট্রাস্ট:</span>
+                <span class="status-value trust-value">{{ trust_score }}%</span>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-search"></i>
+                <span>সার্চ:</span>
+                <span class="status-value search-value">{{ search_count }}/50</span>
+            </div>
+        </div>
+        
+        <!-- ট্যাব -->
+        <div class="tab-container">
+            <div class="tab active" data-tab="chat">
+                <i class="fas fa-comment"></i> চ্যাট
+            </div>
+            <div class="tab" data-tab="search">
+                <i class="fas fa-search"></i> সার্চ
+            </div>
+            <div class="tab" data-tab="learn">
+                <i class="fas fa-graduation-cap"></i> শিখুন
+            </div>
+        </div>
+        
+        <!-- চ্যাট ট্যাব -->
+        <div class="tab-content active" id="chat-tab">
+            <!-- চ্যাট এরিয়া -->
+            <div class="chat-area" id="chatBox">
+                <!-- মেসেজগুলো এখানে আসবে -->
+            </div>
+            
+            <!-- ইনপুট এরিয়া -->
+            <div class="input-area">
+                <div class="input-group">
+                    <input type="text" id="userInput" placeholder="আপনার প্রশ্ন লিখুন... (উদা: বাংলাদেশের রাজধানী কি?)">
+                    <button id="sendBtn" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> পাঠান
+                    </button>
+                    <button id="webSearchBtn" class="btn btn-secondary" title="গুগলে সার্চ করুন">
+                        <i class="fas fa-search"></i> গুগল
+                    </button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="learnBtn" class="btn btn-info">
+                        <i class="fas fa-graduation-cap"></i> শেখান
+                    </button>
+                    <button id="undoBtn" class="btn btn-warning">
+                        <i class="fas fa-undo"></i> বাতিল
+                    </button>
+                    <button id="statsBtn" class="btn">
+                        <i class="fas fa-chart-bar"></i> পরিসংখ্যান
+                    </button>
+                    <button id="resetBtn" class="btn btn-danger">
+                        <i class="fas fa-redo"></i> রিসেট
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- সার্চ ট্যাব -->
+        <div class="tab-content" id="search-tab">
+            <!-- সার্চ কন্টেন্ট লোড হবে -->
+        </div>
+        
+        <!-- লার্ন ট্যাব -->
+        <div class="tab-content" id="learn-tab">
+            <div class="learning-mode active" id="learningMode">
+                <div class="learning-header">
+                    <h3><i class="fas fa-graduation-cap"></i> বট কে শেখান</h3>
+                </div>
+                <div class="learning-inputs">
+                    <input type="text" id="teachQuestion" placeholder="নতুন প্রশ্ন লিখুন (উদা: সূর্য কি গ্যাসের তৈরি?)">
+                    <input type="text" id="teachAnswer" placeholder="সঠিক উত্তর লিখুন (উদা: হ্যাঁ, সূর্য গ্যাসের তৈরি)">
+                </div>
+                <button id="teachBtn" class="btn btn-primary">
+                    <i class="fas fa-save"></i> শেখান
+                </button>
+                <div style="margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 10px;">
+                    <h4><i class="fas fa-lightbulb"></i> টিপস:</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>সঠিক এবং যাচাইকৃত তথ্য শেখান</li>
+                        <li>বাংলায় প্রশ্ন ও উত্তর লিখুন</li>
+                        <li>ভুল শেখালে 'বাতিল' বাটন ব্যবহার করুন</li>
+                        <li>বট গুগল থেকেও স্বয়ংক্রিয়ভাবে শিখবে</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- লার্নিং মোড (চ্যাট ট্যাবের জন্য) -->
+        <div class="learning-mode" id="chatLearningMode">
+            <!-- সিএট ট্যাবের জন্য আলাদা -->
+        </div>
+        
+        <!-- ফুটার -->
+        <div class="footer" style="text-align: center; padding: 15px; color: #666; font-size: 0.9rem; border-top: 1px solid #eee;">
+            <p>
+                <i class="fas fa-code"></i> বাংলা AI চ্যাটবট v2.0 | 
+                <i class="fas fa-shield-alt"></i> নিরাপদ AI | 
+                <i class="fas fa-search"></i> গুগল ইন্টিগ্রেশন | 
+                <i class="fas fa-brain"></i> সেল্ফ-লার্নিং
+            </p>
+            <p style="margin-top: 5px; font-size: 0.8rem;">
+                প্রতিদিন ৫০টি গুগল সার্চ | স্বয়ংক্রিয় তথ্য সংগ্রহ | ট্রাস্ট-ভিত্তিক শেখা
+            </p>
+        </div>
+    </div>
+    
+    <!-- সোর্স মোডাল -->
+    <div class="modal" id="sourcesModal">
+        <div class="modal-content">
+            <!-- মোডাল কন্টেন্ট -->
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
