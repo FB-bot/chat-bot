@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: bangla-ai-chatbot
+    env: python
+    region: singapore
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.13
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ENABLE_WEB_SEARCH
+        value: "true"
+      - key: MAX_SEARCH_PER_DAY
+        value: "50"
+    healthCheckPath: /
+    autoDeploy: true
