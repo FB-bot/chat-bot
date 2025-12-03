@@ -1,19 +1,5 @@
-# Core
 Flask==2.3.3
 gunicorn==20.1.0
-python-dotenv==1.0.0
-
-# Web & Search (আপডেটেড ভার্শন)
 requests==2.31.0
 beautifulsoup4==4.12.2
 googlesearch-python==1.2.3
-duckduckgo-search==6.0.0  # আপডেট করুন
-
-# AI & ML (হালকা ভার্শন)
-sentence-transformers==2.2.2
-torch==2.1.0
-numpy==1.24.3
-transformers==4.36.0
-
-# Database
-sqlalchemy==2.0.23
